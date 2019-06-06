@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hostingEnvironment": {
+            "value": ""
+        },
+        "alwaysOn": {
+            "value": false
+        },
+        "currentStack": {
+            "value": "dotnet"
+        },
+        "netFrameworkVersion": {
+            "value": "v4.0"
+        },
+        "subscriptionId": {
+            "value": "<AZURE SUBSCRIPTION ID>"
+        },
+        "dynatraceEnvironmentId": {
+            "value": "<YOUR ENVIRONMENT ID>"
+        },
+        "dynatracePaasToken": {
+            "value": "<YOUR TOKEN>"
+        },
+        "dynatraceApiUrl": {
+            "value": "<YOUR BASE URL>/e/<YOUR ENVIRONMENT ID>/api"
+        }
+    }
+}

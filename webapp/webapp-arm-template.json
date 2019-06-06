@@ -1,0 +1,85 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subscriptionId": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "hostingEnvironment": {
+            "type": "string"
+        },
+        "hostingPlanName": {
+            "type": "string"
+        },
+        "serverFarmResourceGroup": {
+            "type": "string"
+        },
+        "alwaysOn": {
+            "type": "bool"
+        },
+        "currentStack": {
+            "type": "string"
+        },
+        "netFrameworkVersion": {
+            "type": "string"
+        },
+        "dynatraceEnvironmentId": {
+            "type": "string"
+        },
+        "dynatracePaasToken": {
+            "type": "string"
+        },
+        "dynatraceApiUrl": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('name')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[parameters('location')]",
+            "resources": [
+                {
+                    "apiVersion": "2016-08-01",
+                    "name": "Dynatrace",
+                    "type": "siteextensions",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', parameters('name'))]"
+                    ],
+                    "properties": { }
+                }
+            ],
+            "tags": {},
+            "dependsOn": null,
+            "properties": {
+                "name": "[parameters('name')]",
+                "siteConfig": {
+                    "http20Enabled": true,
+                    "appSettings": [
+                        { "Name": "DT_TENANT", "Value": "[parameters('dynatraceEnvironmentId')]" },
+                        { "Name": "DT_API_TOKEN", "Value": "[parameters('dynatracePaasToken')]" },
+                        { "Name": "DT_API_URL", "Value": "[parameters('dynatraceApiUrl')]" }
+                    ],
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "[parameters('currentStack')]"
+                        }
+                    ],
+                    "netFrameworkVersion": "[parameters('netFrameworkVersion')]",
+                    "alwaysOn": "[parameters('alwaysOn')]"
+                },
+                "serverFarmId": "[concat('/subscriptions/', parameters('subscriptionId'),'/resourcegroups/', parameters('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
+                "hostingEnvironment": "[parameters('hostingEnvironment')]",
+                "clientAffinityEnabled": true
+            }
+        }
+    ]
+}
